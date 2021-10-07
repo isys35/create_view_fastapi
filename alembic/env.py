@@ -11,7 +11,7 @@ config = context.config
 
 fileConfig(config.config_file_name)
 
-target_metadata = Base
+target_metadata = Base.metadata
 
 
 def run_migrations_offline():
