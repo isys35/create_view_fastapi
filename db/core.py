@@ -1,9 +1,12 @@
+import pathlib
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+PATH_TO_ENV_FILE = os.path.join(pathlib.Path(__file__).parent.parent, '.env')
+load_dotenv(PATH_TO_ENV_FILE)
 
 POSTGRES_DB = os.getenv('POSTGRES_DB')
 POSTGRES_USER = os.getenv('POSTGRES_USER')
