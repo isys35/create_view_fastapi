@@ -48,6 +48,14 @@ def create_command(command: schemas.BotCommand, db: Session = Depends(get_db)):
     return db_command
 
 
+@app.get("/commands/{command_id}", response_model=schemas.BotCommand)
+def get_command(command_id: int, db: Session = Depends(get_db)):
+    db_command = manager.get_command_by_id(db, command_id=command_id)
+    if not db_command:
+        raise HTTPException(status_code=400, detail="Коммманда не найдена")
+    return db_command
+
+
 @app.delete("/commands/{command_id}")
 def delete_command(command_id: int, db: Session = Depends(get_db)):
     db_command = manager.get_command_by_id(db, command_id=command_id)
