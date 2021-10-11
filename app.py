@@ -41,11 +41,20 @@ def get_commands(db: Session = Depends(get_db)):
 
 @app.post("/commands/", response_model=schemas.BotCommand)
 def create_command(command: schemas.BotCommand, db: Session = Depends(get_db)):
-    db_command = manager.get_command(db, value=command.value)
+    db_command = manager.get_command_by_value(db, value=command.value)
     if db_command:
-        raise HTTPException(status_code=400, detail="Данная комманда уже есть")
+        raise HTTPException(status_code=400, detail="Комманда уже есть в базе")
     db_command = manager.create_command(db, command)
     return db_command
+
+
+@app.delete("/commands/{command_id}")
+def delete_command(command_id: int, db: Session = Depends(get_db)):
+    db_command = manager.get_command_by_id(db, command_id=command_id)
+    if not db_command:
+        raise HTTPException(status_code=400, detail="Комманда не найдена")
+    manager.delete_command(db, command_id=command_id)
+    return {'status': True}
 
 
 if __name__ == "__main__":

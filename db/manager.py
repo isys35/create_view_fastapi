@@ -15,5 +15,14 @@ def create_command(db: Session, command: schemas.BotCommand):
     return db_command
 
 
-def get_command(db: Session, value: str):
+def get_command_by_value(db: Session, value: str):
     return db.query(models.BotCommand).filter(models.BotCommand.value == value).first()
+
+
+def get_command_by_id(db: Session, command_id: int):
+    return db.query(models.BotCommand).filter(models.BotCommand.id == command_id).first()
+
+
+def delete_command(db: Session, command_id: int):
+    db.query(models.BotCommand).filter(models.BotCommand.id == command_id).delete()
+    db.commit()
