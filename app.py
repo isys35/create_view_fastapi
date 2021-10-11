@@ -65,5 +65,14 @@ def delete_command(command_id: int, db: Session = Depends(get_db)):
     return {'status': True}
 
 
+@app.patch("/commands/{command_id}")
+def update_command(command_id: int, command: schemas.BotCommand, db: Session = Depends(get_db)):
+    db_command = manager.get_command_by_id(db, command_id=command_id)
+    if not db_command:
+        raise HTTPException(status_code=400, detail="Комманда не найдена")
+    manager.update_command(db, command_id=command_id, command=command)
+    return {'status': True}
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
