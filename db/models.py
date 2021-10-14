@@ -9,4 +9,10 @@ class BotCommand(Base):
     __tablename__ = 'bot_command'
 
     id = Column(Integer, primary_key=True)
+
+
+class ReplyButton(Base):
+    __tablename__ = 'tg_button'
+
+    id = Column(Integer, primary_key=True)
     value = Column(String(100), unique=True)
