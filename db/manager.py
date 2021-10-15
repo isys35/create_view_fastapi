@@ -28,6 +28,18 @@ def delete_command(db: Session, command_id: int):
     db.commit()
 
 
-def update_command(db: Session, command_id: int,  command: schemas.BotCommand):
+def update_command(db: Session, command_id: int, command: schemas.BotCommand):
     db.query(models.BotCommand).filter(models.BotCommand.id == command_id).update({"value": command.value})
     db.commit()
+
+
+def create_reply_button(db: Session, reply_button: schemas.ReplyButton):
+    db_reply_button = models.ReplyButton(value=reply_button.value)
+    db.add(db_reply_button)
+    db.commit()
+    db.refresh(db_reply_button)
+    return db_reply_button
+
+
+def get_reply_button_by_value(db: Session, value: str):
+    return db.query(models.ReplyButton).filter(models.ReplyButton.value == value).first()

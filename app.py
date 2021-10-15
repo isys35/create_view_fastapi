@@ -74,5 +74,14 @@ def update_command(command_id: int, command: schemas.BotCommand, db: Session = D
     return {'status': True}
 
 
+@app.post("/replybuttons/", response_model=schemas.ReplyButton)
+def create_replybutton(reply_button: schemas.ReplyButton, db: Session = Depends(get_db)):
+    db_reply_button = manager.get_reply_button_by_value(db, value=reply_button.value)
+    if db_reply_button:
+        raise HTTPException(status_code=400, detail="Кнопка уже есть в базе")
+    db_command = manager.create_reply_button(db, reply_button)
+    return db_command
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
