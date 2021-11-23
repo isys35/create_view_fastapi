@@ -83,5 +83,19 @@ def create_replybutton(reply_button: schemas.ReplyButton, db: Session = Depends(
     return db_command
 
 
+@app.get("/replybuttons/", response_model=List[schemas.ReplyButton])
+def get_replybuttons(db: Session = Depends(get_db)):
+    commands = manager.get_reply_buttons(db)
+    return commands
+
+
+@app.get("/replybuttons/{replybutton_id}", response_model=schemas.ReplyButton)
+def get_replybutton(replybutton_id: int, db: Session = Depends(get_db)):
+    db_command = manager.get_reply_button_by_id(db, replybutton_id=replybutton_id)
+    if not db_command:
+        raise HTTPException(status_code=400, detail="Коммманда не найдена")
+    return db_command
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

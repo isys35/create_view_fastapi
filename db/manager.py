@@ -43,3 +43,11 @@ def create_reply_button(db: Session, reply_button: schemas.ReplyButton):
 
 def get_reply_button_by_value(db: Session, value: str):
     return db.query(models.ReplyButton).filter(models.ReplyButton.value == value).first()
+
+
+def get_reply_button_by_id(db: Session, replybutton_id: int):
+    return db.query(models.ReplyButton).filter(models.ReplyButton.id == replybutton_id).first()
+
+
+def get_reply_buttons(db: Session):
+    return db.query(models.ReplyButton).all()
