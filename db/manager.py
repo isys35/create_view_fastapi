@@ -51,3 +51,13 @@ def get_reply_button_by_id(db: Session, replybutton_id: int):
 
 def get_reply_buttons(db: Session):
     return db.query(models.ReplyButton).all()
+
+
+def delete_reply_button(db: Session, replybutton_id: int):
+    db.query(models.ReplyButton).filter(models.ReplyButton.id == replybutton_id).delete()
+    db.commit()
+
+
+def update_reply_button(db: Session, replybutton_id: int, replybutton: schemas.BotCommand):
+    db.query(models.ReplyButton).filter(models.ReplyButton.id == replybutton_id).update({"value": replybutton.value})
+    db.commit()

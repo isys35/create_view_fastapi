@@ -79,22 +79,41 @@ def create_replybutton(reply_button: schemas.ReplyButton, db: Session = Depends(
     db_reply_button = manager.get_reply_button_by_value(db, value=reply_button.value)
     if db_reply_button:
         raise HTTPException(status_code=400, detail="Кнопка уже есть в базе")
-    db_command = manager.create_reply_button(db, reply_button)
-    return db_command
+    db_reply_button = manager.create_reply_button(db, reply_button)
+    return db_reply_button
 
 
 @app.get("/replybuttons/", response_model=List[schemas.ReplyButton])
 def get_replybuttons(db: Session = Depends(get_db)):
-    commands = manager.get_reply_buttons(db)
-    return commands
+    replybuttons = manager.get_reply_buttons(db)
+    return replybuttons
 
 
 @app.get("/replybuttons/{replybutton_id}", response_model=schemas.ReplyButton)
 def get_replybutton(replybutton_id: int, db: Session = Depends(get_db)):
-    db_command = manager.get_reply_button_by_id(db, replybutton_id=replybutton_id)
-    if not db_command:
-        raise HTTPException(status_code=400, detail="Коммманда не найдена")
-    return db_command
+    db_reply_button = manager.get_reply_button_by_id(db, replybutton_id=replybutton_id)
+    if not db_reply_button:
+        raise HTTPException(status_code=400, detail="Кнопка не найдена")
+    return db_reply_button
+
+
+@app.delete("/replybuttons/{replybutton_id}")
+def delete_command(replybutton_id: int, db: Session = Depends(get_db)):
+    db_reply_button = manager.get_reply_button_by_id(db, replybutton_id=replybutton_id)
+    if not db_reply_button:
+        raise HTTPException(status_code=400, detail="Кнопка не найдена")
+    manager.delete_reply_button(db, replybutton_id=replybutton_id)
+    return {'status': True}
+
+
+@app.patch("/replybuttons/{replybutton_id}")
+def update_reply_button(replybutton_id: int, replybutton: schemas.ReplyButton, db: Session = Depends(get_db)):
+    db_reply_button = manager.get_reply_button_by_id(db, replybutton_id=replybutton_id)
+    if not db_reply_button:
+        raise HTTPException(status_code=400, detail="Кнопка не найдена")
+    manager.update_reply_button(db, replybutton_id=replybutton_id, replybutton=replybutton)
+    return {'status': True}
+
 
 
 if __name__ == "__main__":
