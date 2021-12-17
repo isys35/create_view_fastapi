@@ -72,3 +72,13 @@ def get_input(db: Session, type: Optional[str], command_id: Optional[int]):
     if type == 'command':
         return db.query(models.Input).filter(models.Input.type == type,
                                              models.Input.command_id == command_id).first()
+
+
+def create_state(db: Session, state: schemas.State):
+    db_view = models.View(text=state.view.text)
+    db_state = models.State(view=db_view, input_id=state.input.id)
+    db.add(db_view)
+    db.add(db_state)
+    db.commit()
+    db.refresh(db_state)
+    return db_state

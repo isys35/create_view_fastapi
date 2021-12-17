@@ -123,7 +123,10 @@ def get_input(type: Optional[str], command_id: Optional[int], db: Session = Depe
     return db_input
 
 
-
+@app.post("/states/", response_model=schemas.State)
+def create_state(state: schemas.State, db: Session = Depends(get_db)):
+    db_state = manager.create_state(db, state)
+    return db_state
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
