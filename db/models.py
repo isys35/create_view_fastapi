@@ -80,5 +80,5 @@ class View(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     text = Column(Text)
-    states = relationship("State", back_populates="input")
+    states = relationship("State", back_populates="view")
     replybuttons = relationship("ReplyButton", secondary=association_table, back_populates="views")

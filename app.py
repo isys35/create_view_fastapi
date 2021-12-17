@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import uvicorn
 
@@ -113,6 +113,15 @@ def update_reply_button(replybutton_id: int, replybutton: schemas.ReplyButton, d
         raise HTTPException(status_code=400, detail="Кнопка не найдена")
     manager.update_reply_button(db, replybutton_id=replybutton_id, replybutton=replybutton)
     return {'status': True}
+
+
+@app.get("/inputs/", response_model=schemas.Input)
+def get_input(type: Optional[str], command_id: Optional[int], db: Session = Depends(get_db)):
+    db_input = manager.get_input(db, type=type, command_id=command_id)
+    if not db_input:
+        raise HTTPException(status_code=400, detail="Input не найден")
+    return db_input
+
 
 
 
