@@ -82,3 +82,10 @@ class View(Base):
     text = Column(Text)
     states = relationship("State", back_populates="view")
     replybuttons = relationship("ReplyButton", secondary=association_table, back_populates="views")
+
+
+class Bot(Base):
+    __tablename__ = 'bot'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    token = Column(Text)
