@@ -105,4 +105,4 @@ class TelegramUser(Base):
     can_read_all_group_messages = Column(Boolean, nullable=True)
     supports_inline_queries = Column(Boolean, nullable=True)
     bot_id = Column(Integer, ForeignKey('bot.id'), nullable=True)
-    bot = relationship("Bot", back_populates="tg_user")
+    bot = relationship("Bot", back_populates="telegram_user")
