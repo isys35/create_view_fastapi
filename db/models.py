@@ -99,7 +99,7 @@ class TelegramUser(Base):
     is_bot = Column(Boolean)
     first_name = Column(String(100))
     last_name = Column(String(100), nullable=True)
-    user_name = Column(String(100), nullable=True)
+    username = Column(String(100), nullable=True)
     language_code = Column(String(100), nullable=True)
     can_join_groups = Column(Boolean, nullable=True)
     can_read_all_group_messages = Column(Boolean, nullable=True)
