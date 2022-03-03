@@ -5,34 +5,11 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
-association_table = Table('reply_button_has_view', Base.metadata,
-                          Column('replybutton_id', ForeignKey('replybutton.id'), primary_key=True),
-                          Column('view_id', ForeignKey('view.id'), primary_key=True)
-                          )
-
-
-class Command(Base):
-    __tablename__ = 'command'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    value = Column(String(100), unique=True)
-    inputs = relationship("Input", back_populates="command")
-
-
-class ReplyButton(Base):
-    __tablename__ = 'replybutton'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    value = Column(String(100), unique=True)
-    inputs = relationship("Input", back_populates="replybutton")
-    views = relationship("View", secondary=association_table, back_populates="replybuttons")
-
 
 class CallBack(Base):
     __tablename__ = 'callback'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    func_name = Column(String(100), unique=True)
     inputs = relationship("Input", back_populates="callback")
 
 
@@ -45,21 +22,26 @@ class Location(Base):
     inputs = relationship("Input", back_populates="location")
 
 
+class InputTypes(Base):
+    __tablename__ = 'input_types'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    value = Column(String(100), nullable=False)
+    inputs = relationship("Input", back_populates="input_types")
+
+
 class Input(Base):
     __tablename__ = 'input'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    type = Column(String(100), nullable=True)
-    replybutton_id = Column(Integer, ForeignKey('replybutton.id'), nullable=True)
-    replybutton = relationship("ReplyButton", back_populates="inputs")
+    type_id = Column(Integer, ForeignKey('input_types.id'))
+    type = Column("InputTypes", back_populates="inputs")
     callback_id = Column(Integer, ForeignKey('callback.id'), nullable=True)
     callback = relationship("CallBack", back_populates="inputs")
     location_id = Column(Integer, ForeignKey('location.id'), nullable=True)
     location = relationship("Location", back_populates="inputs")
     phone = Column(String(100), nullable=True)
     text = Column(Text, nullable=True)
-    command_id = Column(Integer, ForeignKey('command.id'), nullable=True)
-    command = relationship("Command", back_populates="inputs")
     states = relationship("State", back_populates="input")
 
 
@@ -81,7 +63,6 @@ class View(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     text = Column(Text)
     states = relationship("State", back_populates="view")
-    replybuttons = relationship("ReplyButton", secondary=association_table, back_populates="views")
 
 
 class Bot(Base):
