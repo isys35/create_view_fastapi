@@ -27,7 +27,7 @@ class InputTypes(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     value = Column(String(100), nullable=False)
-    inputs = relationship("Input", back_populates="input_types")
+    inputs = relationship("Input", back_populates="type")
 
 
 class Input(Base):
@@ -35,7 +35,7 @@ class Input(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     type_id = Column(Integer, ForeignKey('input_types.id'))
-    type = Column("InputTypes", back_populates="inputs")
+    type = relationship("InputTypes", back_populates="inputs")
     callback_id = Column(Integer, ForeignKey('callback.id'), nullable=True)
     callback = relationship("CallBack", back_populates="inputs")
     location_id = Column(Integer, ForeignKey('location.id'), nullable=True)
@@ -69,7 +69,7 @@ class Bot(Base):
     __tablename__ = 'bot'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    token = Column(Text)
+    token = Column(Text, unique=True)
     telegram_user = relationship("TelegramUser", back_populates="bot", uselist=False)
 
 

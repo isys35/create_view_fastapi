@@ -1,10 +1,12 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
-from telegram_api.models import User
+from pyteledantic.models import User
 
 
 class BotCommand(BaseModel):
-    id: int = None
+    id: Optional[int] = None
     value: str
 
     class Config:
@@ -19,7 +21,7 @@ class Input(BaseModel):
 
 
 class ReplyButton(BaseModel):
-    id: int = None
+    id: Optional[int] = None
     value: str
 
     class Config:
@@ -36,7 +38,7 @@ class View(BaseModel):
 
 class State(BaseModel):
     id: int
-    parent_id: int = None
+    parent_id: Optional[int] = None
     view: View
     input: Input
 
@@ -45,7 +47,6 @@ class State(BaseModel):
 
 
 class Bot(BaseModel):
-    id: int = None
     token: str
 
     class Config:

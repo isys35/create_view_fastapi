@@ -1,9 +1,8 @@
-from typing import List, Optional
-
 import uvicorn
 
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from requests.exceptions import ProxyError
 
 from db import manager
 from db.core import Session
@@ -11,7 +10,6 @@ from db.core import Session
 import schemas
 
 from telegram_api import bot as tg_bot
-from telegram_api import models as tg_models
 from telegram_api.exceptions.exceptions import TelegramAPIException
 
 app = FastAPI()
@@ -43,12 +41,15 @@ def create_state(state: schemas.State, db: Session = Depends(get_db)):
     return db_state
 
 
-@app.post("/bots/", response_model=schemas.Bot)
+@app.post("/bots/", response_model=schemas.Bot, responses={400: {"model": schemas.Bot},
+                                                           500: {"model": schemas.Bot}})
 async def create_bot(bot: schemas.Bot, db: Session = Depends(get_db)):
     try:
         tg_user = tg_bot.Bot(bot.token).get_me()
     except TelegramAPIException as ex:
-        raise HTTPException(status_code=400, detail=ex.txt)
+        raise HTTPException(status_code=400, detail=f"TelegramAPIError {ex.txt}")
+    except ProxyError:
+        raise HTTPException(status_code=500, detail=f"ProxyError")
     bot = manager.create_bot(db, tg_user, bot)
     return bot
 
