@@ -14,7 +14,9 @@ def create_state(db: Session, state: schemas.State):
     return db_state
 
 
-def create_bot(db: Session, tg_user: telegram_api_schema.User, bot: schemas.Bot):
+def create_bot(db: Session,
+               tg_user: telegram_api_schema.User,
+               bot: schemas.BotBase):
     db_bot = models.Bot(token=bot.token)
     db_tg_user = models.TelegramUser(**tg_user.dict())
     db_tg_user.bot = db_bot

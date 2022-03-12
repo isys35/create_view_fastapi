@@ -46,15 +46,19 @@ class State(BaseModel):
         orm_mode = True
 
 
-class Bot(BaseModel):
+class BotBase(BaseModel):
     token: str
+
+
+class TelegramUser(User):
 
     class Config:
         orm_mode = True
 
 
-class TelegramUser(User):
-    bot: Bot
+class Bot(BotBase):
+    id: int
+    telegram_user: TelegramUser
 
     class Config:
         orm_mode = True
