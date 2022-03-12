@@ -17,8 +17,13 @@ def create_state(db: Session, state: schemas.State):
 def create_bot(db: Session,
                tg_user: telegram_api_schema.User,
                bot: schemas.BotBase):
+    db_bot = db.query(models.Bot).filter_by(token=bot.token).first()
+    if db_bot:
+        return db_bot
     db_bot = models.Bot(token=bot.token)
-    db_tg_user = models.TelegramUser(**tg_user.dict())
+    db_tg_user = db.query(models.TelegramUser).filter_by(id=tg_user.id).first()
+    if not db_tg_user:
+        db_tg_user = models.TelegramUser(**tg_user.dict())
     db_tg_user.bot = db_bot
     db.add(db_bot)
     db.add(db_tg_user)
