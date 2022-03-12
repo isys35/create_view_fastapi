@@ -30,3 +30,7 @@ def create_bot(db: Session,
     db.commit()
     db.refresh(db_bot)
     return db_bot
+
+
+def get_bots(db: Session):
+    return db.query(models.Bot).all()

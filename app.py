@@ -1,3 +1,5 @@
+from typing import List
+
 import uvicorn
 
 from fastapi import FastAPI, Depends, HTTPException
@@ -53,6 +55,12 @@ async def create_bot(bot: schemas.BotBase, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"ProxyError")
     bot = manager.create_bot(db, tg_user, bot)
     return bot
+
+
+@app.get("/bots/", response_model=List[schemas.Bot])
+async def get_bots(db: Session = Depends(get_db)):
+    db_bots = manager.get_bots(db)
+    return db_bots
 
 
 if __name__ == "__main__":
