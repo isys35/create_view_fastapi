@@ -62,3 +62,13 @@ class Bot(BotBase):
 
     class Config:
         orm_mode = True
+
+
+class InputTypeBase(BaseModel):
+    value: str
+
+class InputType(InputTypeBase):
+    id: int
+
+    class Config:
+        orm_mode = True
