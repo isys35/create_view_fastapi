@@ -44,8 +44,8 @@ def create_state(state: schemas.State, db: Session = Depends(get_db)):
 
 
 @app.post("/bots/", response_model=schemas.Bot,
-          responses={400: {"model": schemas.Bot},
-                     500: {"model": schemas.Bot}})
+          responses={400: {"model": schemas.BotBase},
+                     500: {"model": schemas.BotBase}})
 async def create_bot(bot: schemas.BotBase, db: Session = Depends(get_db)):
     try:
         tg_user = tg_bot.Bot(bot.token).get_me()
