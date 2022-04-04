@@ -38,3 +38,10 @@ def get_bots(db: Session):
 
 def get_input_types(db: Session):
     return db.query(models.InputTypes).all()
+
+
+def create_text_input(db: Session, text_input: schemas.TextBase):
+    db_text_input = models.Text(value=text_input.value)
+    db.add(db_text_input)
+    db.commit()
+    return db_text_input
