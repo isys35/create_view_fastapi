@@ -44,9 +44,14 @@ def get_input_types(db: Session = Depends(get_db)):
 
 
 @app.post("/texts/", response_model=schemas.Text)
-def create_text_input(text_input: schemas.TextBase, db: Session = Depends(get_db)):
-    text_input = manager.create_text_input(db, text_input)
-    return text_input
+def create_text_inputs(text_input: schemas.TextBase, db: Session = Depends(get_db)):
+    db_text_input = manager.create_text_input(db, text_input)
+    return db_text_input
+
+@app.get("/texts/", response_model=List[schemas.Text])
+def get_text_inputs(db: Session = Depends(get_db)):
+    db_text_inputs = manager.get_text_inputs(db)
+    return db_text_inputs
 
 
 @app.post("/bots/", response_model=schemas.Bot,
