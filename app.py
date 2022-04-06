@@ -12,6 +12,7 @@ import schemas
 
 from telegram_api import bot as tg_bot
 from telegram_api import models as tg_models
+from telegram_api.exceptions.exceptions import TelegramAPIException
 
 app = FastAPI()
 
@@ -132,10 +133,14 @@ def create_state(state: schemas.State, db: Session = Depends(get_db)):
     return db_state
 
 
-@app.post("/bots/", response_model=tg_models.User)
+@app.post("/bots/", response_model=schemas.Bot)
 async def create_bot(bot: schemas.Bot, db: Session = Depends(get_db)):
-    user = tg_bot.Bot(bot.token).get_me()
-    return user
+    try:
+        tg_user = tg_bot.Bot(bot.token).get_me()
+    except TelegramAPIException as ex:
+        raise HTTPException(status_code=400, detail=ex.txt)
+    bot = manager.create_bot(db, tg_user, bot)
+    return bot
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

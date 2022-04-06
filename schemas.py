@@ -45,7 +45,7 @@ class State(BaseModel):
 
 
 class Bot(BaseModel):
-    id: int
+    id: int = None
     token: str
 
     class Config:
