@@ -104,12 +104,16 @@ async def get_views(db: Session = Depends(get_db)):
     return db_views
 
 
+@app.post("/states/", response_model=schemas.State)
+async def create_state(state: schemas.StateBase, db: Session = Depends(get_db)):
+    db_state = manager.create_state(db, state)
+    return db_state
 
 
-# @app.post("/states/", response_model=schemas.State)
-# async def create_state(state: schemas.StateBase, db: Session = Depends(get_db)):
-#     db_state = manager.create_state(db, state)
-#     return db_state
+@app.get("/states/", response_model=List[schemas.State])
+async def get_states(db: Session = Depends(get_db)):
+    db_states = manager.get_states(db)
+    return db_states
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -79,12 +79,16 @@ def get_views(db: Session):
     return db.query(models.View).all()
     
 
-# def create_state(db: Session, state: schemas.State):
-#     db_state = models.State(
-#         view_id=state.view_id,
-#         input_id=state.input_id,
-#         parent_id=state.parent_id)
-#     db.add(db_state)
-#     db.commit()
-#     db.refresh(db_state)
-#     return db_state
+def create_state(db: Session, state: schemas.State):
+    db_state = models.State(
+        view_id=state.view_id,
+        input_id=state.input_id,
+        parent_id=state.parent_id)
+    db.add(db_state)
+    db.commit()
+    db.refresh(db_state)
+    return db_state
+
+
+def get_states(db: Session):
+    return db.query(models.State).all()

@@ -133,28 +133,27 @@ class View(ViewBase):
     class Config:
         orm_mode = True
 
-# class ViewRelated(View):
-#     states: List['State']
+class ViewRelated(View):
+    states: List['State']
 
-# class StateBase(BaseModel):
-#     parent_id: Optional[int] = None
-#     view_id: int
-#     input_id: int
-
-
-# class State(StateBase):
-#     id: int
-#     parent: Optional['State'] = None
-#     view: View
-#     input: Input
-
-#     class Config:
-#         orm_mode = True
+class StateBase(BaseModel):
+    parent_id: Optional[int] = None
+    view_id: int
+    input_id: int
 
 
-# State.update_forward_refs()
+class State(StateBase):
+    id: int
+    parent: Optional['State'] = None
+    view: View
+    input: Input
+
+    class Config:
+        orm_mode = True
 
 
+ViewRelated.update_forward_refs()
+State.update_forward_refs()
 InputTypeRelated.update_forward_refs()
 PhoneRelated.update_forward_refs()
 LocationRelated.update_forward_refs()
