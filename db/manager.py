@@ -1,7 +1,7 @@
 import schemas
 from sqlalchemy.orm import Session
 from db import models
-from telegram_api import models as telegram_api_schema
+from pyteledantic import models as telegram_api_schema
 
 
 def create_state(db: Session, state: schemas.State):
