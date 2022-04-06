@@ -5,27 +5,6 @@ from pydantic import BaseModel
 from pyteledantic.models import User
 
 
-class View(BaseModel):
-    id: int
-    text: str
-
-    class Config:
-        orm_mode = True
-
-
-# class StateBase(BaseModel):
-#     parent_id: Optional[int] = None
-#     view: View
-#     input: Input
-
-
-# class State(StateBase):
-#     id: int
-
-#     class Config:
-#         orm_mode = True
-
-
 class BotBase(BaseModel):
     token: str
 
@@ -144,6 +123,36 @@ class Input(InputBase):
         orm_mode = True
 
 
+class ViewBase(BaseModel):
+    text: str
+
+
+class View(ViewBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+# class ViewRelated(View):
+#     states: List['State']
+
+# class StateBase(BaseModel):
+#     parent_id: Optional[int] = None
+#     view_id: int
+#     input_id: int
+
+
+# class State(StateBase):
+#     id: int
+#     parent: Optional['State'] = None
+#     view: View
+#     input: Input
+
+#     class Config:
+#         orm_mode = True
+
+
+# State.update_forward_refs()
 
 
 InputTypeRelated.update_forward_refs()

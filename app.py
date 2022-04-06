@@ -91,5 +91,25 @@ async def delete_input(id: int, db: Session = Depends(get_db)):
     status = True if status else False
     return {'input_deleted': status}
 
+
+@app.post("/views/", response_model=schemas.View)
+async def create_view(view: schemas.ViewBase, db: Session = Depends(get_db)):
+    db_view = manager.create_view(db, view)
+    return db_view
+
+
+@app.get("/views/", response_model=List[schemas.View])
+async def get_views(db: Session = Depends(get_db)):
+    db_views = manager.get_views(db)
+    return db_views
+
+
+
+
+# @app.post("/states/", response_model=schemas.State)
+# async def create_state(state: schemas.StateBase, db: Session = Depends(get_db)):
+#     db_state = manager.create_state(db, state)
+#     return db_state
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

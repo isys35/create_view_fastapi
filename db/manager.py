@@ -4,16 +4,6 @@ from db import models
 from pyteledantic import models as telegram_api_schema
 
 
-# def create_state(db: Session, state: schemas.State):
-#     db_view = models.View(text=state.view.text)
-#     db_state = models.State(view=db_view, input_id=state.input.id)
-#     db.add(db_view)
-#     db.add(db_state)
-#     db.commit()
-#     db.refresh(db_state)
-#     return db_state
-
-
 def create_bot(db: Session,
                tg_user: telegram_api_schema.User,
                bot: schemas.BotBase):
@@ -74,3 +64,27 @@ def delete_input(id: int, db: Session):
     query_delete = db.query(models.Input).filter(models.Input.id==id).delete() 
     db.commit()
     return query_delete
+
+def create_view(db: Session, view: schemas.ViewBase):
+    db_view = models.View(
+        text=view.text
+        )
+    db.add(db_view)
+    db.commit()
+    db.refresh(db_view)
+    return db_view
+
+
+def get_views(db: Session):
+    return db.query(models.View).all()
+    
+
+# def create_state(db: Session, state: schemas.State):
+#     db_state = models.State(
+#         view_id=state.view_id,
+#         input_id=state.input_id,
+#         parent_id=state.parent_id)
+#     db.add(db_state)
+#     db.commit()
+#     db.refresh(db_state)
+#     return db_state
