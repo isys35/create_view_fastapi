@@ -10,6 +10,9 @@ from db.core import Session
 
 import schemas
 
+from telegram_api import bot as tg_bot
+from telegram_api import models as tg_models
+
 app = FastAPI()
 
 origins = [
@@ -128,6 +131,11 @@ def create_state(state: schemas.State, db: Session = Depends(get_db)):
     db_state = manager.create_state(db, state)
     return db_state
 
+
+@app.post("/bots/", response_model=tg_models.User)
+async def create_bot(bot: schemas.Bot, db: Session = Depends(get_db)):
+    user = tg_bot.Bot(bot.token).get_me()
+    return user
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

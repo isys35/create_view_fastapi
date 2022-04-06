@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, Text, ForeignKey, Numeric, Table
+from sqlalchemy import Column, String, Integer, Text, ForeignKey, Numeric, Table, Boolean
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -89,3 +89,20 @@ class Bot(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     token = Column(Text)
+    telegram_user = relationship("TelegramUser", back_populates="bot", uselist=False)
+
+
+class TelegramUser(Base):
+    __tablename__ = 'telegram_user'
+
+    id = Column(Integer, primary_key=True)
+    is_bot = Column(Boolean)
+    first_name = Column(String(100))
+    last_name = Column(String(100), nullable=True)
+    user_name = Column(String(100), nullable=True)
+    language_code = Column(String(100), nullable=True)
+    can_join_groups = Column(Boolean, nullable=True)
+    can_read_all_group_messages = Column(Boolean, nullable=True)
+    supports_inline_queries = Column(Boolean, nullable=True)
+    bot_id = Column(Integer, ForeignKey('bot.id'), nullable=True)
+    bot = relationship("Bot", back_populates="tg_user")

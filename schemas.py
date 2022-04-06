@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+from telegram_api.models import User
+
 
 class BotCommand(BaseModel):
     id: int = None
@@ -41,3 +43,17 @@ class State(BaseModel):
     class Config:
         orm_mode = True
 
+
+class Bot(BaseModel):
+    id: int
+    token: str
+
+    class Config:
+        orm_mode = True
+
+
+class TelegramUser(User):
+    bot: Bot
+
+    class Config:
+        orm_mode = True
