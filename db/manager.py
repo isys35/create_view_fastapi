@@ -45,3 +45,7 @@ def create_text_input(db: Session, text_input: schemas.TextBase):
     db.add(db_text_input)
     db.commit()
     return db_text_input
+
+
+def get_text_inputs(db: Session):
+    return db.query(models.Text).all()
