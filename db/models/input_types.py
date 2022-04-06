@@ -3,6 +3,8 @@ from sqlalchemy.orm import relationship
 
 from .base import Base
 
+# TODO: Лучше переименовать, сделать вида *Input
+
 class CallBack(Base):
     __tablename__ = 'callback'
 
@@ -21,7 +23,7 @@ class Location(Base):
 
 class Text(Base):
     __tablename__ = 'text'
-
+    # TODO: Может лучше сделать value уникальным?
     id = Column(Integer, primary_key=True, autoincrement=True)
     value = Column(Text, nullable=False)
     inputs = relationship("Input", back_populates="text")

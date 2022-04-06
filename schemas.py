@@ -72,3 +72,14 @@ class InputType(InputTypeBase):
 
     class Config:
         orm_mode = True
+
+
+class TextBase(BaseModel):
+    value: str
+
+
+class Text(TextBase):
+    id: int
+
+    class Config:
+        orm_mode = True
