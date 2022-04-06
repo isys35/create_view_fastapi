@@ -6,7 +6,10 @@ Create Date: 2022-03-21 16:53:39.780825
 
 """
 from alembic import op
+from fastapi import Depends
 import sqlalchemy as sa
+
+from app import get_db
 
 
 # revision identifiers, used by Alembic.
@@ -14,6 +17,9 @@ revision = '8f189cb4a31b'
 down_revision = None
 branch_labels = None
 depends_on = None
+
+
+INPUT_TYPES = ['callback', 'location', 'text']
 
 
 def upgrade():
@@ -80,6 +86,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['view_id'], ['view.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    db = Depends(get_db)
     # ### end Alembic commands ###
 
 

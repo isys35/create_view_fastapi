@@ -37,10 +37,10 @@ def get_db():
         db.close()
 
 
-@app.post("/states/", response_model=schemas.State)
-def create_state(state: schemas.State, db: Session = Depends(get_db)):
-    db_state = manager.create_state(db, state)
-    return db_state
+@app.get("/input-types/", response_model=List[schemas.InputType])
+def get_input_types(db: Session = Depends(get_db)):
+    db_input_type = manager.get_input_types(db)
+    return db_input_type
 
 
 @app.post("/bots/", response_model=schemas.Bot,
@@ -61,6 +61,7 @@ async def create_bot(bot: schemas.BotBase, db: Session = Depends(get_db)):
 async def get_bots(db: Session = Depends(get_db)):
     db_bots = manager.get_bots(db)
     return db_bots
+
 
 
 if __name__ == "__main__":

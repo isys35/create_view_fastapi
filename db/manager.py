@@ -34,3 +34,7 @@ def create_bot(db: Session,
 
 def get_bots(db: Session):
     return db.query(models.Bot).all()
+
+
+def get_input_types(db: Session):
+    return db.query(models.InputTypes).all()
