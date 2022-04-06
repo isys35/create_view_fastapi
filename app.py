@@ -74,17 +74,22 @@ async def get_bots(db: Session = Depends(get_db)):
     return db_bots
 
 
-# @app.post("/states/", response_model=schemas.State)
-# async def create_state(state: schemas.StateBase, db: Session = Depends(get_db)):
-#     db_state = manager.create_state(db, state)
-#     return db_state
-
-
 @app.post("/inputs/", response_model=schemas.Input)
 async def create_input(input: schemas.InputCreate, db: Session = Depends(get_db)):
-    input_db = manager.create_input(db, input)
-    return input_db
+    db_input = manager.create_input(db, input)
+    return db_input
 
+
+@app.get("/inputs/", response_model=List[schemas.Input])
+async def get_inputs(db: Session = Depends(get_db)):
+    db_inputs = manager.get_inputs(db)
+    return db_inputs
+
+@app.delete("/inputs/{id}")
+async def delete_input(id: int, db: Session = Depends(get_db)):
+    status = manager.delete_input(id, db)
+    status = True if status else False
+    return {'input_deleted': status}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -64,3 +64,13 @@ def create_input(db: Session, input: schemas.InputCreate):
     db.commit()
     db.refresh(db_input)
     return db_input
+
+
+def get_inputs(db: Session):
+    return db.query(models.Input).all()
+
+
+def delete_input(id: int, db: Session):
+    query_delete = db.query(models.Input).filter(models.Input.id==id).delete() 
+    db.commit()
+    return query_delete
