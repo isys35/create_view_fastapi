@@ -37,7 +37,7 @@ def get_db():
         db.close()
 
 
-@app.get("/input-types/", response_model=List[schemas.InputType])
+@app.get("/input-types/", response_model=List[schemas.InputTypeRelated])
 def get_input_types(db: Session = Depends(get_db)):
     db_input_type = manager.get_input_types(db)
     return db_input_type
@@ -73,6 +73,17 @@ async def get_bots(db: Session = Depends(get_db)):
     db_bots = manager.get_bots(db)
     return db_bots
 
+
+# @app.post("/states/", response_model=schemas.State)
+# async def create_state(state: schemas.StateBase, db: Session = Depends(get_db)):
+#     db_state = manager.create_state(db, state)
+#     return db_state
+
+
+@app.post("/inputs/", response_model=schemas.Input)
+async def create_input(input: schemas.InputCreate, db: Session = Depends(get_db)):
+    input_db = manager.create_input(db, input)
+    return input_db
 
 
 if __name__ == "__main__":

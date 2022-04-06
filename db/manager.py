@@ -4,14 +4,14 @@ from db import models
 from pyteledantic import models as telegram_api_schema
 
 
-def create_state(db: Session, state: schemas.State):
-    db_view = models.View(text=state.view.text)
-    db_state = models.State(view=db_view, input_id=state.input.id)
-    db.add(db_view)
-    db.add(db_state)
-    db.commit()
-    db.refresh(db_state)
-    return db_state
+# def create_state(db: Session, state: schemas.State):
+#     db_view = models.View(text=state.view.text)
+#     db_state = models.State(view=db_view, input_id=state.input.id)
+#     db.add(db_view)
+#     db.add(db_state)
+#     db.commit()
+#     db.refresh(db_state)
+#     return db_state
 
 
 def create_bot(db: Session,
@@ -44,8 +44,23 @@ def create_text_input(db: Session, text_input: schemas.TextBase):
     db_text_input = models.Text(value=text_input.value)
     db.add(db_text_input)
     db.commit()
+    db.refresh(db_text_input)
     return db_text_input
 
 
 def get_text_inputs(db: Session):
     return db.query(models.Text).all()
+
+
+def create_input(db: Session, input: schemas.InputCreate):
+    db_input = models.Input(
+        type_id=input.type_id,
+        callback_id=input.callback_id,
+        location_id=input.location_id,
+        phone_id=input.phone_id,
+        text_id=input.text_id
+        )
+    db.add(db_input)
+    db.commit()
+    db.refresh(db_input)
+    return db_input
