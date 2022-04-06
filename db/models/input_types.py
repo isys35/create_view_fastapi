@@ -24,7 +24,7 @@ class Text(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     value = Column(Text, nullable=False)
-    inputs = relationship("Input", back_populates="location")
+    inputs = relationship("Input", back_populates="text")
 
 
 class Phone(Base):
@@ -32,4 +32,4 @@ class Phone(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     value = Column(String(100), nullable=False)
-    inputs = relationship("Input", back_populates="location")
+    inputs = relationship("Input", back_populates="phone")

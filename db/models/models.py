@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Integer, Text, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 
-from .input_types import CallBack, Location, Phone, Base, Text as TextTable
+from .input_types import Base
 
 
 class InputTypes(Base):
@@ -25,7 +25,7 @@ class Input(Base):
     phone_id = Column(Integer, ForeignKey('phone.id'), nullable=True)
     phone = relationship("Phone", back_populates="inputs")
     text_id = Column(Integer, ForeignKey('text.id'), nullable=True)
-    text = relationship("TextTable", back_populates="inputs")
+    text = relationship("Text", back_populates="inputs")
     states = relationship("State", back_populates="input")
 
 
