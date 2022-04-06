@@ -1,25 +1,7 @@
-from sqlalchemy import Column, String, Integer, Text, ForeignKey, Numeric, Table, Boolean
-
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, Integer, Text, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 
-Base = declarative_base()
-
-
-class CallBack(Base):
-    __tablename__ = 'callback'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    inputs = relationship("Input", back_populates="callback")
-
-
-class Location(Base):
-    __tablename__ = 'location'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    longitude = Column(Numeric, nullable=False)
-    latitude = Column(Numeric, nullable=False)
-    inputs = relationship("Input", back_populates="location")
+from .input_types import CallBack, Location, Phone, Base, Text as TextTable
 
 
 class InputTypes(Base):
@@ -40,8 +22,10 @@ class Input(Base):
     callback = relationship("CallBack", back_populates="inputs")
     location_id = Column(Integer, ForeignKey('location.id'), nullable=True)
     location = relationship("Location", back_populates="inputs")
-    phone = Column(String(100), nullable=True)
-    text = Column(Text, nullable=True)
+    phone_id = Column(Integer, ForeignKey('phone.id'), nullable=True)
+    phone = relationship("Phone", back_populates="inputs")
+    text_id = Column(Integer, ForeignKey('text.id'), nullable=True)
+    text = relationship("TextTable", back_populates="inputs")
     states = relationship("State", back_populates="input")
 
 
