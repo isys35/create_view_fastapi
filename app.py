@@ -1,3 +1,4 @@
+import os
 from typing import List
 
 import uvicorn
@@ -13,6 +14,8 @@ from db.core import Session
 import schemas
 
 from telegram_api import bot as tg_bot
+
+os.system("cls")
 
 app = FastAPI()
 
