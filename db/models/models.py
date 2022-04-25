@@ -29,6 +29,16 @@ class Input(Base):
     states = relationship("State", back_populates="input")
 
 
+class Script(Base):
+    __tablename__ = 'script'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100))
+    description = Column(Text, nullable=True)
+    states = relationship("State", back_populates="script")
+    bots = relationship("Bot", back_populates="script")
+
+
 class State(Base):
     __tablename__ = 'state'
 
@@ -39,6 +49,8 @@ class State(Base):
     view = relationship("View", back_populates="states")
     input_id = Column(Integer, ForeignKey('input.id'), nullable=True)
     input = relationship("Input", back_populates="states")
+    script_id = Column(Integer, ForeignKey('script.id'))
+    script = relationship("Script", back_populates="states")
 
 
 class View(Base):
@@ -48,13 +60,14 @@ class View(Base):
     text = Column(Text)
     states = relationship("State", back_populates="view")
 
-
 class Bot(Base):
     __tablename__ = 'bot'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     token = Column(Text, unique=True)
     telegram_user = relationship("TelegramUser", back_populates="bot", uselist=False)
+    script_id = Column(Integer, ForeignKey('script.id'), nullable=True)
+    script = relationship("Script", back_populates="bots")
 
 
 class TelegramUser(Base):
