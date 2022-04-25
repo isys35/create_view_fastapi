@@ -26,6 +26,10 @@ def get_bots(db: Session):
     return db.query(models.Bot).all()
 
 
+def get_bot(db: Session, token: str):
+    return db.query(models.Bot).filter_by(token=token).first()
+
+
 def get_input_types(db: Session):
     return db.query(models.InputTypes).all()
 

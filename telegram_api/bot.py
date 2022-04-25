@@ -1,5 +1,6 @@
-from pyteledantic.methods import get_me
+from pyteledantic.methods import get_me, set_webhook
 from pyteledantic.models import Bot as BotModel, User
+from settings import HOST
 
 
 class Bot:
@@ -8,3 +9,8 @@ class Bot:
 
     def get_me(self) -> User:
         return get_me(self.bot_model)
+
+    def set_webhook(self) -> bool:
+        """Ссылка на webhook формируется по правилу host + bots/webhook/ + token"""
+        url = HOST + f'bots/webhook/{self.bot_model.token}'
+        return set_webhook(self.bot_model, url)

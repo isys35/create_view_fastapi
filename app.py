@@ -76,6 +76,10 @@ async def get_bots(db: Session = Depends(get_db)):
     db_bots = manager.get_bots(db)
     return db_bots
 
+@app.get("/bots/{token}/enable-webhook", response_model=bool)
+async def enable_webhook(token: str):
+    bot = tg_bot.Bot(token)
+    return bot.set_webhook()
 
 @app.post("/inputs/", response_model=schemas.Input)
 async def create_input(input: schemas.InputCreate, db: Session = Depends(get_db)):
