@@ -114,6 +114,11 @@ def create_location(db: Session, location: telegram_api_schema.Location):
     return db_location
 
 
+def get_location(db: Session, location_id: int):
+    location_db = db.query(models.Location).filter(models.Location.id==location_id).first() 
+    return location_db
+
+
 def create_text(db: Session, text: str):
     db_text = models.Text(
         value=text
@@ -122,3 +127,8 @@ def create_text(db: Session, text: str):
     db.commit()
     db.refresh(db_text)
     return db_text
+
+
+def get_text(db: Session, text_id: int):
+    text_db = db.query(models.Text).filter(models.Text.id==text_id).first() 
+    return text_db
