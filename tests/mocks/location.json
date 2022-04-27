@@ -1,0 +1,24 @@
+{
+    "update_id": 157861993,
+    "message": {
+        "message_id": 396,
+        "from": {
+            "id": 1040023542,
+            "is_bot": false,
+            "first_name": "Dzmitry",
+            "username": "dzmitrydrazdou",
+            "language_code": "ru"
+        },
+        "chat": {
+            "id": 1040023542,
+            "first_name": "Dzmitry",
+            "username": "dzmitrydrazdou",
+            "type": "private"
+        },
+        "date": 1628245888,
+        "location": {
+            "latitude": 53.917409,
+            "longitude": 27.587606
+        }
+    }
+}
