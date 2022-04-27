@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 import pytest
 
 from fastapi.testclient import TestClient
@@ -19,6 +20,7 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 Base.metadata.create_all(bind=engine)
 
 
+@contextmanager
 def override_get_db():
     try:
         db = TestingSessionLocal()

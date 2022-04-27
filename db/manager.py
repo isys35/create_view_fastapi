@@ -1,6 +1,7 @@
 import schemas
 from sqlalchemy.orm import Session
 from db import models
+
 from pyteledantic import models as telegram_api_schema
 
 
@@ -44,6 +45,10 @@ def create_text_input(db: Session, text_input: schemas.TextBase):
 
 def get_text_inputs(db: Session):
     return db.query(models.Text).all()
+
+
+def get_input_type(db: Session, value: str):
+    return db.query(models.InputTypes).filter_by(models.InputTypes.value==value).first()
 
 
 def create_input(db: Session, input: schemas.InputCreate):
@@ -96,3 +101,24 @@ def create_state(db: Session, state: schemas.State):
 
 def get_states(db: Session):
     return db.query(models.State).all()
+
+
+def create_location(db: Session, location: telegram_api_schema.Location):
+    db_location = models.Location(
+        latitude=location.latitude,
+        longitude=location.longitude
+    )
+    db.add(db_location)
+    db.commit()
+    db.refresh(db_location)
+    return db_location
+
+
+def create_text(db: Session, text: str):
+    db_text = models.Text(
+        value=text
+    )
+    db.add(db_text)
+    db.commit()
+    db.refresh(db_text)
+    return db_text

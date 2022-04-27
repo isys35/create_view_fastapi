@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 import os
 from typing import List
 
@@ -6,6 +7,7 @@ import uvicorn
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pyteledantic.exceptions.exceptions import TelegramAPIException
+from pyteledantic.models import Update
 from requests.exceptions import ProxyError
 
 from db import manager
@@ -31,7 +33,7 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-
+@contextmanager
 def get_db():
     db = Session()
     try:
@@ -77,9 +79,15 @@ async def get_bots(db: Session = Depends(get_db)):
     return db_bots
 
 @app.get("/bots/{token}/enable-webhook", response_model=bool)
-async def enable_webhook(token: str):
+async def enable_webhook(token: str, update: Update):
     bot = tg_bot.Bot(token)
     return bot.set_webhook()
+
+
+@app.post('/bots/webhook/{token}')
+async def webhook_update_handler(token: str, update: Update):
+    pass
+
 
 @app.post("/inputs/", response_model=schemas.Input)
 async def create_input(input: schemas.InputCreate, db: Session = Depends(get_db)):
@@ -121,6 +129,7 @@ async def create_state(state: schemas.StateBase, db: Session = Depends(get_db)):
 async def get_states(db: Session = Depends(get_db)):
     db_states = manager.get_states(db)
     return db_states
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
