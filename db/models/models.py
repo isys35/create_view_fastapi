@@ -51,6 +51,7 @@ class State(Base):
     input = relationship("Input", back_populates="states")
     script_id = Column(Integer, ForeignKey('script.id'))
     script = relationship("Script", back_populates="states")
+    users = relationship("Users", back_populates="state")
 
 
 class View(Base):
@@ -84,3 +85,4 @@ class TelegramUser(Base):
     supports_inline_queries = Column(Boolean, nullable=True)
     bot_id = Column(Integer, ForeignKey('bot.id'), nullable=True)
     bot = relationship("Bot", back_populates="telegram_user")
+    user = relationship("User", back_populates="telegram_user", uselist=False)

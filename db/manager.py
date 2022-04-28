@@ -12,15 +12,22 @@ def create_bot(db: Session,
     if db_bot:
         return db_bot
     db_bot = models.Bot(token=bot.token)
-    db_tg_user = db.query(models.TelegramUser).filter_by(id=tg_user.id).first()
-    if not db_tg_user:
-        db_tg_user = models.TelegramUser(**tg_user.dict())
+    db_tg_user = create_or_get_tg_user(db, tg_user)
     db_tg_user.bot = db_bot
     db.add(db_bot)
-    db.add(db_tg_user)
     db.commit()
     db.refresh(db_bot)
     return db_bot
+
+
+def create_or_get_tg_user(db: Session,
+                   tg_user: telegram_api_schema.User):
+    db_tg_user = db.query(models.TelegramUser).filter_by(id=tg_user.id).first()
+    if not db_tg_user:
+        db_tg_user = models.TelegramUser(**tg_user.dict())
+        db.add(db_tg_user)
+        db.commit()
+    return db_tg_user
 
 
 def get_bots(db: Session):
